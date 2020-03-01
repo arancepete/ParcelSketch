@@ -27,6 +27,7 @@ namespace ParcelSketch {
 			//
 			//TODO: Add the constructor code here
 			//
+			this->MakeBackgroundGrid();
 		}
 
 		// The grid spacing.
@@ -60,10 +61,8 @@ namespace ParcelSketch {
 			}
 		}
 	private: System::Windows::Forms::PictureBox^  picCanvas;
-	private: System::Windows::Forms::CheckBox^  chkSnapToGrid;
-	protected:
 
-	protected:
+	
 
 	private:
 		/// <summary>
@@ -79,7 +78,6 @@ namespace ParcelSketch {
 		void InitializeComponent(void)
 		{
 			this->picCanvas = (gcnew System::Windows::Forms::PictureBox());
-			this->chkSnapToGrid = (gcnew System::Windows::Forms::CheckBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picCanvas))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -88,9 +86,9 @@ namespace ParcelSketch {
 			this->picCanvas->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->picCanvas->Location = System::Drawing::Point(12, 27);
+			this->picCanvas->Location = System::Drawing::Point(12, 12);
 			this->picCanvas->Name = L"picCanvas";
-			this->picCanvas->Size = System::Drawing::Size(260, 222);
+			this->picCanvas->Size = System::Drawing::Size(260, 237);
 			this->picCanvas->TabIndex = 0;
 			this->picCanvas->TabStop = false;
 			this->picCanvas->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MainForm::picCanvas_Paint);
@@ -98,29 +96,16 @@ namespace ParcelSketch {
 			this->picCanvas->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::picCanvas_MouseMove_NotDown);
 			this->picCanvas->Resize += gcnew System::EventHandler(this, &MainForm::picCanvas_Resize);
 			// 
-			// chkSnapToGrid
-			// 
-			this->chkSnapToGrid->AutoSize = true;
-			this->chkSnapToGrid->Location = System::Drawing::Point(13, 4);
-			this->chkSnapToGrid->Name = L"chkSnapToGrid";
-			this->chkSnapToGrid->Size = System::Drawing::Size(89, 17);
-			this->chkSnapToGrid->TabIndex = 1;
-			this->chkSnapToGrid->Text = L"Snap To Grid";
-			this->chkSnapToGrid->UseVisualStyleBackColor = true;
-			this->chkSnapToGrid->CheckedChanged += gcnew System::EventHandler(this, &MainForm::chkSnapToGrid_CheckedChanged);
-			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(284, 261);
-			this->Controls->Add(this->chkSnapToGrid);
 			this->Controls->Add(this->picCanvas);
 			this->Name = L"MainForm";
 			this->Text = L"Parcel - Sketch v1";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picCanvas))->EndInit();
 			this->ResumeLayout(false);
-			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -208,7 +193,7 @@ namespace ParcelSketch {
 			 // Snap to the nearest grid point.
 	private: System::Void SnapToGrid(System::Int32% x, System::Int32% y)
 	{
-		if (!chkSnapToGrid->Checked) return;
+		//if (!chkSnapToGrid->Checked) return;
 		x = grid_gap * (System::Int32)Math::Round((System::Double)x / grid_gap);
 		y = grid_gap * (System::Int32)Math::Round((System::Double)y / grid_gap);
 	}
@@ -484,25 +469,20 @@ namespace ParcelSketch {
 
 	private: System::Void MakeBackgroundGrid()
 	{
-		if (!chkSnapToGrid->Checked)
-		{
-			picCanvas->BackgroundImage = nullptr;
-		}
-		else
-		{
-			Bitmap^ bm = gcnew Bitmap(
-				picCanvas->ClientSize.Width,
-				picCanvas->ClientSize.Height);
-			for (int x = 0; x < picCanvas->ClientSize.Width; x += grid_gap)
-			{
-				for (int y = 0; y < picCanvas->ClientSize.Height; y += grid_gap)
-				{
-					bm->SetPixel(x, y, Color::Black);
-				}
-			}
 
-			picCanvas->BackgroundImage = bm;
+		Bitmap^ bm = gcnew Bitmap(
+			picCanvas->ClientSize.Width,
+			picCanvas->ClientSize.Height);
+		for (int x = 0; x < picCanvas->ClientSize.Width; x += grid_gap)
+		{
+			for (int y = 0; y < picCanvas->ClientSize.Height; y += grid_gap)
+			{
+				bm->SetPixel(x, y, Color::Black);
+			}
 		}
+
+		picCanvas->BackgroundImage = bm;
+
 	}
 
 
