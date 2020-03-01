@@ -77,6 +77,7 @@ namespace ParcelSketch {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = gcnew System::ComponentModel::Container();
 			this->picCanvas = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picCanvas))->BeginInit();
 			this->SuspendLayout();
